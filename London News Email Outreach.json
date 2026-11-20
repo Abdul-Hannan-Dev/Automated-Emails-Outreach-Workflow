@@ -1,0 +1,309 @@
+{
+  "name": "London News Email Outreach",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0f704b52-fdf2-49e1-8733-ea99d9a2c5b8",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JwXgSFBg4ay_FtGHi5Su_-Pk5U5V1brKG5ysnQV2FQI",
+          "mode": "list",
+          "cachedResultName": "Published Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JwXgSFBg4ay_FtGHi5Su_-Pk5U5V1brKG5ysnQV2FQI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1376957039,
+          "mode": "list",
+          "cachedResultName": "Sheet11",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JwXgSFBg4ay_FtGHi5Su_-Pk5U5V1brKG5ysnQV2FQI/edit#gid=1376957039"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "349801fc-2b29-4f97-ac32-2d1726111a01",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZfPBH5mzTwuUYX6s",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "eef6809a-2bd5-4ced-9ab0-d42a968f3384",
+              "leftValue": "={{ $json[\"done\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "2f0f3948-2633-46d5-89c3-e2c24fff8942",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        624,
+        0
+      ],
+      "id": "ad48623d-223f-437c-ac80-9d505248c24d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:\\Users\\Team 1\\.n8n-files\\londonews.png",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "2e47c071-d606-43d3-8d3b-e47815100cb8",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "fromEmail": "advertising@londonews.com",
+        "toEmail": "={{ $('Loop Over Items').item.json.email }}",
+        "subject": "Londonews PR Packages",
+        "html": "<div style=\"max-width:650px;margin:0 auto;padding:20px;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55;color:#222222;background:#ffffff;\">\n\n  <img\n    src=\"https://londonews.com/wp-content/uploads/2026/08/image-4.png\"\n    alt=\"London News Advertising Packages\"\n    width=\"650\"\n    style=\"display:block;width:100%;max-width:650px;height:auto;margin:0 auto 24px auto;border:0;outline:none;\"\n  >\n\n  <div style=\"text-align:left;\">\n\n    Hi,<br><br>\n\n    We’re reaching out from <strong>London News</strong> to introduce an opportunity to put your business in front of a wider digital audience through our <strong>Sponsored Articles, Brand Features and Digital PR solutions</strong>.<br><br>\n\n    A feature on <strong>London News</strong> can help strengthen your brand presence, build online credibility and give your business valuable exposure through professionally presented editorial content.<br><br>\n\n    We have put together our <strong>latest advertising packages and pricing</strong> for businesses looking to increase their visibility online. Please find the packages above for your review.<br><br>\n\n    You can explore our platform and recent content at\n    <a href=\"https://londonews.com\"\n       target=\"_blank\"\n       style=\"color:#d71920;font-weight:bold;text-decoration:underline;\">\n      londonews.com\n    </a>.<br><br>\n\n    If you’re interested in featuring your business with London News, simply reply to this email and our team will be happy to recommend the most suitable package based on your goals.<br><br>\n\n    We look forward to working with you.<br><br>\n\n    <strong>Best regards,</strong><br>\n    <strong>Advertising Team</strong><br>\n    <strong>London News</strong>\n\n  </div>\n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "39a117f7-5a66-445c-8dd0-fe336ccec393",
+      "name": "Send an Email",
+      "webhookId": "905c841f-8e85-4ad2-b036-4cdfd492efc4",
+      "credentials": {
+        "smtp": {
+          "id": "lOzicKaAm1bIZphP",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1JwXgSFBg4ay_FtGHi5Su_-Pk5U5V1brKG5ysnQV2FQI",
+          "mode": "list",
+          "cachedResultName": "Published Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JwXgSFBg4ay_FtGHi5Su_-Pk5U5V1brKG5ysnQV2FQI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1376957039,
+          "mode": "list",
+          "cachedResultName": "Sheet11",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JwXgSFBg4ay_FtGHi5Su_-Pk5U5V1brKG5ysnQV2FQI/edit#gid=1376957039"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Loop Over Items').item.json.email }}",
+            "done": "Yes"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "done",
+              "displayName": "done",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "e3b5277a-8ea8-40be-a8e9-15c05ce8b2b1",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZfPBH5mzTwuUYX6s",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c5c9142c-c0ea-4772-b144-815c31a72879",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1cae2add2e8183b07b32c6bc33097614a87deecbe64d96fcf1f461dd2a147f59"
+  },
+  "id": "cqNNHX3s7pkTQkXG",
+  "tags": []
+}
